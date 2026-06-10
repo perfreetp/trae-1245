@@ -8,9 +8,9 @@
     "date": "2024-03-01",
     "status": "received",
     "remark": "3月上旬首批发货",
-    "id": "FLWMQ81GXAIS0",
-    "createdAt": "2026-06-10T12:22:29.514Z",
-    "receivedAt": "2026-06-10T12:22:29.515Z"
+    "id": "FLWMQ8229Z0S0",
+    "createdAt": "2026-06-10T12:39:05.724Z",
+    "receivedAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "ship",
@@ -21,9 +21,9 @@
     "date": "2024-03-05",
     "status": "received",
     "remark": "",
-    "id": "FLWMQ81GXAIS1",
-    "createdAt": "2026-06-10T12:22:29.514Z",
-    "receivedAt": "2026-06-10T12:22:29.515Z"
+    "id": "FLWMQ8229Z1S1",
+    "createdAt": "2026-06-10T12:39:05.725Z",
+    "receivedAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "ship",
@@ -34,8 +34,8 @@
     "date": "2024-03-10",
     "status": "reported",
     "remark": "",
-    "id": "FLWMQ81GXAIS2",
-    "createdAt": "2026-06-10T12:22:29.514Z"
+    "id": "FLWMQ8229Z1S2",
+    "createdAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "ship",
@@ -46,13 +46,13 @@
     "date": "2024-04-01",
     "status": "received",
     "remark": "",
-    "id": "FLWMQ81GXAIS3",
-    "createdAt": "2026-06-10T12:22:29.514Z",
-    "receivedAt": "2026-06-10T12:22:29.515Z"
+    "id": "FLWMQ8229Z1S3",
+    "createdAt": "2026-06-10T12:39:05.725Z",
+    "receivedAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81GXAIS0",
+    "shipFlowId": "FLWMQ8229Z0S0",
     "batchNo": "BN2024001",
     "from": "华北制药",
     "to": "北京医药公司",
@@ -60,12 +60,12 @@
     "receivedBy": "李经理",
     "date": "2024-03-04",
     "remark": "实收998",
-    "id": "RCVMQ81GXAJR0",
-    "createdAt": "2026-06-10T12:22:29.515Z"
+    "id": "RCVMQ8229Z1R0",
+    "createdAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81GXAIS1",
+    "shipFlowId": "FLWMQ8229Z1S1",
     "batchNo": "BN2024002",
     "from": "华北制药",
     "to": "上海医药公司",
@@ -73,12 +73,12 @@
     "receivedBy": "王经理",
     "date": "2024-03-07",
     "remark": "",
-    "id": "RCVMQ81GXAJR1",
-    "createdAt": "2026-06-10T12:22:29.515Z"
+    "id": "RCVMQ8229Z1R1",
+    "createdAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81GXAIS3",
+    "shipFlowId": "FLWMQ8229Z1S3",
     "batchNo": "BN2024004",
     "from": "华北制药",
     "to": "成都医药公司",
@@ -86,8 +86,8 @@
     "receivedBy": "张经理",
     "date": "2024-04-05",
     "remark": "",
-    "id": "RCVMQ81GXAJR2",
-    "createdAt": "2026-06-10T12:22:29.515Z"
+    "id": "RCVMQ8229Z1R2",
+    "createdAt": "2026-06-10T12:39:05.725Z"
   },
   {
     "type": "ship",
@@ -98,9 +98,9 @@
     "date": "2024-03-01",
     "status": "received",
     "remark": "3月上旬首批发货",
-    "id": "FLWMQ81KSWRS0",
-    "createdAt": "2026-06-10T12:25:30.459Z",
-    "receivedAt": "2026-06-10T12:25:30.459Z"
+    "id": "FLWMQ82BHNNS0",
+    "createdAt": "2026-06-10T12:46:15.587Z",
+    "receivedAt": "2026-06-10T12:46:15.587Z"
   },
   {
     "type": "ship",
@@ -111,9 +111,9 @@
     "date": "2024-03-05",
     "status": "received",
     "remark": "",
-    "id": "FLWMQ81KSWRS1",
-    "createdAt": "2026-06-10T12:25:30.459Z",
-    "receivedAt": "2026-06-10T12:25:30.459Z"
+    "id": "FLWMQ82BHNNS1",
+    "createdAt": "2026-06-10T12:46:15.587Z",
+    "receivedAt": "2026-06-10T12:46:15.587Z"
   },
   {
     "type": "ship",
@@ -124,8 +124,8 @@
     "date": "2024-03-10",
     "status": "reported",
     "remark": "",
-    "id": "FLWMQ81KSWRS2",
-    "createdAt": "2026-06-10T12:25:30.459Z"
+    "id": "FLWMQ82BHNNS2",
+    "createdAt": "2026-06-10T12:46:15.587Z"
   },
   {
     "type": "ship",
@@ -136,13 +136,13 @@
     "date": "2024-04-01",
     "status": "received",
     "remark": "",
-    "id": "FLWMQ81KSWRS3",
-    "createdAt": "2026-06-10T12:25:30.459Z",
-    "receivedAt": "2026-06-10T12:25:30.459Z"
+    "id": "FLWMQ82BHNNS3",
+    "createdAt": "2026-06-10T12:46:15.587Z",
+    "receivedAt": "2026-06-10T12:46:15.588Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81KSWRS0",
+    "shipFlowId": "FLWMQ82BHNNS0",
     "batchNo": "BN2024001",
     "from": "华北制药",
     "to": "北京医药公司",
@@ -150,12 +150,12 @@
     "receivedBy": "李经理",
     "date": "2024-03-04",
     "remark": "实收998",
-    "id": "RCVMQ81KSWRR0",
-    "createdAt": "2026-06-10T12:25:30.459Z"
+    "id": "RCVMQ82BHNNR0",
+    "createdAt": "2026-06-10T12:46:15.587Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81KSWRS1",
+    "shipFlowId": "FLWMQ82BHNNS1",
     "batchNo": "BN2024002",
     "from": "华北制药",
     "to": "上海医药公司",
@@ -163,12 +163,12 @@
     "receivedBy": "王经理",
     "date": "2024-03-07",
     "remark": "",
-    "id": "RCVMQ81KSWRR1",
-    "createdAt": "2026-06-10T12:25:30.459Z"
+    "id": "RCVMQ82BHNNR1",
+    "createdAt": "2026-06-10T12:46:15.587Z"
   },
   {
     "type": "receive",
-    "shipFlowId": "FLWMQ81KSWRS3",
+    "shipFlowId": "FLWMQ82BHNNS3",
     "batchNo": "BN2024004",
     "from": "华北制药",
     "to": "成都医药公司",
@@ -176,7 +176,7 @@
     "receivedBy": "张经理",
     "date": "2024-04-05",
     "remark": "",
-    "id": "RCVMQ81KSWRR2",
-    "createdAt": "2026-06-10T12:25:30.459Z"
+    "id": "RCVMQ82BHNNR2",
+    "createdAt": "2026-06-10T12:46:15.588Z"
   }
 ]

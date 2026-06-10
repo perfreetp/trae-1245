@@ -1,50 +1,26 @@
 [
   {
-    "id": "RTYMQ81IV4Q76",
+    "id": "RTYMQ82BHK4GF",
     "taskType": "import:flow",
     "payload": {
-      "file": "E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-flow.csv",
+      "file": "E:\\trae-bz\\TraeProjects\\1245\\test\\notexist.csv",
       "options": {
         "kind": "flow",
         "dryRun": false
       }
     },
-    "errorMsg": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-flow.csv",
+    "errorMsg": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist.csv",
     "status": "completed",
-    "createdAt": "2026-06-10T12:24:00.026Z",
+    "createdAt": "2026-06-10T12:46:15.460Z",
     "retryCount": 1,
     "history": [
       {
-        "at": "2026-06-10T12:25:30.455Z",
-        "before": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-flow.csv",
+        "at": "2026-06-10T12:46:15.583Z",
+        "before": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist.csv",
         "result": "success"
       }
     ],
-    "lastRetryAt": "2026-06-10T12:25:30.455Z",
-    "completedAt": "2026-06-10T12:25:30.461Z"
-  },
-  {
-    "id": "RTYMQ81IV9B55",
-    "taskType": "import:batch",
-    "payload": {
-      "file": "E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-batch.csv",
-      "options": {
-        "kind": "batch",
-        "dryRun": false
-      }
-    },
-    "errorMsg": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-batch.csv",
-    "status": "completed",
-    "createdAt": "2026-06-10T12:24:00.191Z",
-    "retryCount": 1,
-    "history": [
-      {
-        "at": "2026-06-10T12:25:30.462Z",
-        "before": "文件不存在: E:\\trae-bz\\TraeProjects\\1245\\test\\notexist-batch.csv",
-        "result": "success"
-      }
-    ],
-    "lastRetryAt": "2026-06-10T12:25:30.462Z",
-    "completedAt": "2026-06-10T12:25:30.469Z"
+    "lastRetryAt": "2026-06-10T12:46:15.583Z",
+    "completedAt": "2026-06-10T12:46:15.589Z"
   }
 ]

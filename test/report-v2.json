@@ -1,0 +1,387 @@
+{
+  "meta": {
+    "generatedAt": "2026-06-10T12:45:49.021Z",
+    "filters": {
+      "batchNo": "",
+      "org": "",
+      "fromDate": "",
+      "toDate": ""
+    },
+    "summary": {
+      "accounts": 0,
+      "codepacks": 0,
+      "batches": 5,
+      "flows": 7,
+      "ships": 4,
+      "receives": 3,
+      "verifies": 0,
+      "recalls": 1,
+      "missingItems": 7,
+      "matchedFlows": 3,
+      "unmatchedFlows": 1,
+      "qtyMismatches": 1
+    },
+    "consistency": {
+      "flowShipsEqDiff": true,
+      "batchLinkedToFlows": false
+    },
+    "fingerprint": "337DA2C4063D884E",
+    "archiveId": "ARC-20260610-XN4R7"
+  },
+  "account": [],
+  "codepacks": [],
+  "batches": [
+    {
+      "id": "BATMQ8229VA0",
+      "batchNo": "BN2024001",
+      "product": "阿莫西林胶囊",
+      "spec": "0.25g*24粒",
+      "prodDate": "2024-01-15",
+      "expiry": "2026-01-15",
+      "packId": "",
+      "status": "registered",
+      "createdAt": "2026-06-10T12:39:05.590Z"
+    },
+    {
+      "id": "BATMQ8229VB1",
+      "batchNo": "BN2024002",
+      "product": "阿莫西林胶囊",
+      "spec": "0.25g*24粒",
+      "prodDate": "2024-01-20",
+      "expiry": "2026-01-20",
+      "packId": "",
+      "status": "registered",
+      "createdAt": "2026-06-10T12:39:05.591Z"
+    },
+    {
+      "id": "BATMQ8229VB2",
+      "batchNo": "BN2024003",
+      "product": "布洛芬缓释胶囊",
+      "spec": "0.3g*20粒",
+      "prodDate": "2024-02-01",
+      "expiry": "2026-02-01",
+      "packId": "",
+      "status": "registered",
+      "createdAt": "2026-06-10T12:39:05.591Z"
+    },
+    {
+      "id": "BATMQ8229VB3",
+      "batchNo": "BN2024004",
+      "product": "布洛芬缓释胶囊",
+      "spec": "0.3g*20粒",
+      "prodDate": "2024-02-10",
+      "expiry": "2026-02-10",
+      "packId": "",
+      "status": "registered",
+      "createdAt": "2026-06-10T12:39:05.591Z"
+    },
+    {
+      "id": "BATMQ8229VB4",
+      "batchNo": "BN2024005",
+      "product": "氯雷他定片",
+      "spec": "10mg*6片",
+      "prodDate": "2024-02-15",
+      "expiry": "2026-02-15",
+      "packId": "",
+      "status": "registered",
+      "createdAt": "2026-06-10T12:39:05.591Z"
+    }
+  ],
+  "flows": [
+    {
+      "type": "ship",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 1000,
+      "date": "2024-03-01",
+      "status": "received",
+      "remark": "3月上旬首批发货",
+      "id": "FLWMQ8229Z0S0",
+      "createdAt": "2026-06-10T12:39:05.724Z",
+      "receivedAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "ship",
+      "batchNo": "BN2024002",
+      "from": "华北制药",
+      "to": "上海医药公司",
+      "quantity": 500,
+      "date": "2024-03-05",
+      "status": "received",
+      "remark": "",
+      "id": "FLWMQ8229Z1S1",
+      "createdAt": "2026-06-10T12:39:05.725Z",
+      "receivedAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "ship",
+      "batchNo": "BN2024003",
+      "from": "华北制药",
+      "to": "广州医药公司",
+      "quantity": 800,
+      "date": "2024-03-10",
+      "status": "reported",
+      "remark": "",
+      "id": "FLWMQ8229Z1S2",
+      "createdAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "ship",
+      "batchNo": "BN2024004",
+      "from": "华北制药",
+      "to": "成都医药公司",
+      "quantity": 600,
+      "date": "2024-04-01",
+      "status": "received",
+      "remark": "",
+      "id": "FLWMQ8229Z1S3",
+      "createdAt": "2026-06-10T12:39:05.725Z",
+      "receivedAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "receive",
+      "shipFlowId": "FLWMQ8229Z0S0",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 998,
+      "receivedBy": "李经理",
+      "date": "2024-03-04",
+      "remark": "实收998",
+      "id": "RCVMQ8229Z1R0",
+      "createdAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "receive",
+      "shipFlowId": "FLWMQ8229Z1S1",
+      "batchNo": "BN2024002",
+      "from": "华北制药",
+      "to": "上海医药公司",
+      "quantity": 500,
+      "receivedBy": "王经理",
+      "date": "2024-03-07",
+      "remark": "",
+      "id": "RCVMQ8229Z1R1",
+      "createdAt": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "type": "receive",
+      "shipFlowId": "FLWMQ8229Z1S3",
+      "batchNo": "BN2024004",
+      "from": "华北制药",
+      "to": "成都医药公司",
+      "quantity": 600,
+      "receivedBy": "张经理",
+      "date": "2024-04-05",
+      "remark": "",
+      "id": "RCVMQ8229Z1R2",
+      "createdAt": "2026-06-10T12:39:05.725Z"
+    }
+  ],
+  "verify": [],
+  "recall": [
+    {
+      "id": "RCLMQ8299M5",
+      "batchNo": "BN2024001",
+      "product": "",
+      "reason": "含量不合格",
+      "createdAt": "2026-06-10T12:44:31.853Z",
+      "batchCount": 1,
+      "summary": [
+        {
+          "batchNo": "BN2024001",
+          "product": "阿莫西林胶囊",
+          "flows": 2
+        }
+      ]
+    }
+  ],
+  "diff": {
+    "matched": [
+      {
+        "batchNo": "BN2024001",
+        "from": "华北制药",
+        "to": "北京医药公司",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "shipDate": "2024-03-01",
+        "recvDate": "2024-03-04",
+        "shipFlowId": "FLWMQ8229Z0S0",
+        "recvId": "RCVMQ8229Z1R0"
+      },
+      {
+        "batchNo": "BN2024002",
+        "from": "华北制药",
+        "to": "上海医药公司",
+        "shipQty": 500,
+        "recvQty": 500,
+        "shipDate": "2024-03-05",
+        "recvDate": "2024-03-07",
+        "shipFlowId": "FLWMQ8229Z1S1",
+        "recvId": "RCVMQ8229Z1R1"
+      },
+      {
+        "batchNo": "BN2024004",
+        "from": "华北制药",
+        "to": "成都医药公司",
+        "shipQty": 600,
+        "recvQty": 600,
+        "shipDate": "2024-04-01",
+        "recvDate": "2024-04-05",
+        "shipFlowId": "FLWMQ8229Z1S3",
+        "recvId": "RCVMQ8229Z1R2"
+      }
+    ],
+    "unmatched": [
+      {
+        "batchNo": "BN2024003",
+        "from": "华北制药",
+        "to": "广州医药公司",
+        "shipQty": 800,
+        "shipDate": "2024-03-10",
+        "status": "reported",
+        "shipFlowId": "FLWMQ8229Z1S2"
+      }
+    ],
+    "qtyMismatch": [
+      {
+        "batchNo": "BN2024001",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "diff": -2
+      }
+    ],
+    "shipTotal": 4,
+    "recvTotal": 3
+  },
+  "missing": [
+    {
+      "level": "error",
+      "group": "账号",
+      "msg": "未登录"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024001 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024002 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024003 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024004 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024005 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "流向",
+      "msg": "批号 BN2024003 发货至 广州医药公司 未确认收货"
+    }
+  ],
+  "logs": [
+    {
+      "id": "LOGMQ8229VC",
+      "action": "import",
+      "detail": "批量导入批次: 成功 5, 跳过 0, 错误 0",
+      "timestamp": "2026-06-10T12:39:05.592Z"
+    },
+    {
+      "id": "LOGMQ8229Z1",
+      "action": "import",
+      "detail": "批量导入流向: 发货 4, 收货 3, 错误 0",
+      "timestamp": "2026-06-10T12:39:05.725Z"
+    },
+    {
+      "id": "LOGMQ822KUE",
+      "action": "export",
+      "detail": "导出合规报告 ARC-20260610-DEHB6 指纹=F63484CC1D4751F0 格式=json 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.json",
+      "timestamp": "2026-06-10T12:39:19.814Z"
+    },
+    {
+      "id": "LOGMQ822KXQ",
+      "action": "export",
+      "detail": "导出合规报告 ARC-20260610-M1GW6 指纹=F63484CC1D4751F0 格式=txt 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt",
+      "timestamp": "2026-06-10T12:39:19.934Z"
+    },
+    {
+      "id": "LOGMQ822L27",
+      "action": "export",
+      "detail": "导出合规报告 ARC-20260610-9DF7Y 指纹=F63484CC1D4751F0 格式=csv 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.csv",
+      "timestamp": "2026-06-10T12:39:20.095Z"
+    },
+    {
+      "id": "LOGMQ822S4J",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-FXVIO 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.json fatal=0 error=0 warn=1 canArchive=true",
+      "timestamp": "2026-06-10T12:39:29.251Z"
+    },
+    {
+      "id": "LOGMQ822S7V",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-I7V4Q 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=2 warn=1 canArchive=false",
+      "timestamp": "2026-06-10T12:39:29.371Z"
+    },
+    {
+      "id": "LOGMQ822SBA",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-88TAU 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.csv fatal=0 error=0 warn=0 canArchive=true",
+      "timestamp": "2026-06-10T12:39:29.494Z"
+    },
+    {
+      "id": "LOGMQ823RZE",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-OKKGN 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=5 warn=0 canArchive=false",
+      "timestamp": "2026-06-10T12:40:15.722Z"
+    },
+    {
+      "id": "LOGMQ825CEF",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-94MW3 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=5 warn=0 canArchive=false",
+      "timestamp": "2026-06-10T12:41:28.839Z"
+    },
+    {
+      "id": "LOGMQ826DS4",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-X8CZS 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=0 warn=0 canArchive=true",
+      "timestamp": "2026-06-10T12:42:17.284Z"
+    },
+    {
+      "id": "LOGMQ8299IM",
+      "action": "export",
+      "detail": "导出合规报告 ARC-20260610-7L5WX 指纹=099244F04DF1F212 格式=json 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-before.json",
+      "timestamp": "2026-06-10T12:44:31.726Z"
+    },
+    {
+      "id": "LOGMQ8299M5",
+      "action": "recall",
+      "detail": "生成召回清单: 1 个批次, 原因: 含量不合格",
+      "timestamp": "2026-06-10T12:44:31.853Z"
+    },
+    {
+      "id": "LOGMQ8299PN",
+      "action": "export",
+      "detail": "导出合规报告 ARC-20260610-NST34 指纹=337DA2C4063D884E 格式=json 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-after.json",
+      "timestamp": "2026-06-10T12:44:31.979Z"
+    },
+    {
+      "id": "LOGMQ82AAI0",
+      "action": "audit",
+      "detail": "报告审计 ARC-AUD-20260610-MOXQH 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-after.json fatal=0 error=0 warn=0 canArchive=true",
+      "timestamp": "2026-06-10T12:45:19.656Z"
+    }
+  ]
+}

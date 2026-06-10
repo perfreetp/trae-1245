@@ -1,0 +1,62 @@
+[
+  {
+    "archiveId": "ARC-20260610-XN4R7",
+    "fingerprint": "337DA2C4063D884E",
+    "type": "export",
+    "format": "json",
+    "output": "E:\\trae-bz\\TraeProjects\\1245\\test\\report-v2.json",
+    "filters": {
+      "batchNo": "",
+      "org": "",
+      "fromDate": "",
+      "toDate": ""
+    },
+    "summary": {
+      "accounts": 0,
+      "codepacks": 0,
+      "batches": 5,
+      "flows": 7,
+      "ships": 4,
+      "receives": 3,
+      "verifies": 0,
+      "recalls": 1,
+      "missingItems": 7,
+      "matchedFlows": 3,
+      "unmatchedFlows": 1,
+      "qtyMismatches": 1
+    },
+    "createdAt": "2026-06-10T12:45:49.024Z"
+  },
+  {
+    "archiveId": "ARC-AUD-20260610-UCDEP",
+    "fingerprint": "337DA2C4063D884E",
+    "type": "audit",
+    "format": "json",
+    "source": "E:\\trae-bz\\TraeProjects\\1245\\test\\report-v2.json",
+    "target": {
+      "reportArchiveId": "ARC-20260610-XN4R7",
+      "result": {
+        "fatal": 0,
+        "error": 0,
+        "warn": 0,
+        "passed": 16,
+        "canArchive": true
+      }
+    },
+    "createdAt": "2026-06-10T12:45:49.169Z"
+  },
+  {
+    "archiveId": "ARC-RTY-20260610-YTCIS",
+    "fingerprint": "",
+    "type": "retry",
+    "format": "json",
+    "output": "E:\\trae-bz\\TraeProjects\\1245\\test\\retry-log2.json",
+    "summary": {
+      "total": 1,
+      "success": 1,
+      "failed": 0,
+      "pending": 0
+    },
+    "createdAt": "2026-06-10T12:46:15.601Z"
+  }
+]

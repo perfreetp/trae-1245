@@ -12,6 +12,7 @@ const STORES = {
   report: path.join(DATA_DIR, 'report.json'),
   log: path.join(DATA_DIR, 'log.json'),
   retry: path.join(DATA_DIR, 'retry.json'),
+  archive: path.join(DATA_DIR, 'archive.json'),
 };
 
 function ensureDataDir() {

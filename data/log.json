@@ -1,50 +1,122 @@
 [
   {
-    "id": "LOGMQ81GX7J",
+    "id": "LOGMQ8229VC",
     "action": "import",
     "detail": "批量导入批次: 成功 5, 跳过 0, 错误 0",
-    "timestamp": "2026-06-10T12:22:29.407Z"
+    "timestamp": "2026-06-10T12:39:05.592Z"
   },
   {
-    "id": "LOGMQ81GXAJ",
+    "id": "LOGMQ8229Z1",
     "action": "import",
     "detail": "批量导入流向: 发货 4, 收货 3, 错误 0",
-    "timestamp": "2026-06-10T12:22:29.515Z"
+    "timestamp": "2026-06-10T12:39:05.725Z"
   },
   {
-    "id": "LOGMQ81HY5A",
+    "id": "LOGMQ822KUE",
     "action": "export",
-    "detail": "导出合规报告 格式=json 批号=BN2024001 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-BN2024001.json",
-    "timestamp": "2026-06-10T12:23:17.278Z"
+    "detail": "导出合规报告 ARC-20260610-DEHB6 指纹=F63484CC1D4751F0 格式=json 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.json",
+    "timestamp": "2026-06-10T12:39:19.814Z"
   },
   {
-    "id": "LOGMQ81HYD9",
+    "id": "LOGMQ822KXQ",
     "action": "export",
-    "detail": "导出合规报告 格式=txt 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt",
-    "timestamp": "2026-06-10T12:23:17.565Z"
+    "detail": "导出合规报告 ARC-20260610-M1GW6 指纹=F63484CC1D4751F0 格式=txt 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt",
+    "timestamp": "2026-06-10T12:39:19.934Z"
   },
   {
-    "id": "LOGMQ81KSWS",
+    "id": "LOGMQ822L27",
+    "action": "export",
+    "detail": "导出合规报告 ARC-20260610-9DF7Y 指纹=F63484CC1D4751F0 格式=csv 批号=- 机构=北京医药 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.csv",
+    "timestamp": "2026-06-10T12:39:20.095Z"
+  },
+  {
+    "id": "LOGMQ822S4J",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-FXVIO 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.json fatal=0 error=0 warn=1 canArchive=true",
+    "timestamp": "2026-06-10T12:39:29.251Z"
+  },
+  {
+    "id": "LOGMQ822S7V",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-I7V4Q 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=2 warn=1 canArchive=false",
+    "timestamp": "2026-06-10T12:39:29.371Z"
+  },
+  {
+    "id": "LOGMQ822SBA",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-88TAU 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.csv fatal=0 error=0 warn=0 canArchive=true",
+    "timestamp": "2026-06-10T12:39:29.494Z"
+  },
+  {
+    "id": "LOGMQ823RZE",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-OKKGN 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=5 warn=0 canArchive=false",
+    "timestamp": "2026-06-10T12:40:15.722Z"
+  },
+  {
+    "id": "LOGMQ825CEF",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-94MW3 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=5 warn=0 canArchive=false",
+    "timestamp": "2026-06-10T12:41:28.839Z"
+  },
+  {
+    "id": "LOGMQ826DS4",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-X8CZS 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-beijing.txt fatal=0 error=0 warn=0 canArchive=true",
+    "timestamp": "2026-06-10T12:42:17.284Z"
+  },
+  {
+    "id": "LOGMQ8299IM",
+    "action": "export",
+    "detail": "导出合规报告 ARC-20260610-7L5WX 指纹=099244F04DF1F212 格式=json 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-before.json",
+    "timestamp": "2026-06-10T12:44:31.726Z"
+  },
+  {
+    "id": "LOGMQ8299M5",
+    "action": "recall",
+    "detail": "生成召回清单: 1 个批次, 原因: 含量不合格",
+    "timestamp": "2026-06-10T12:44:31.853Z"
+  },
+  {
+    "id": "LOGMQ8299PN",
+    "action": "export",
+    "detail": "导出合规报告 ARC-20260610-NST34 指纹=337DA2C4063D884E 格式=json 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-after.json",
+    "timestamp": "2026-06-10T12:44:31.979Z"
+  },
+  {
+    "id": "LOGMQ82AAI0",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-MOXQH 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-after.json fatal=0 error=0 warn=0 canArchive=true",
+    "timestamp": "2026-06-10T12:45:19.656Z"
+  },
+  {
+    "id": "LOGMQ82AX5T",
+    "action": "export",
+    "detail": "导出合规报告 ARC-20260610-XN4R7 指纹=337DA2C4063D884E 格式=json 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-v2.json",
+    "timestamp": "2026-06-10T12:45:49.025Z"
+  },
+  {
+    "id": "LOGMQ82AX9U",
+    "action": "audit",
+    "detail": "报告审计 ARC-AUD-20260610-UCDEP 源=E:\\trae-bz\\TraeProjects\\1245\\test\\report-v2.json fatal=0 error=0 warn=0 canArchive=true",
+    "timestamp": "2026-06-10T12:45:49.170Z"
+  },
+  {
+    "id": "LOGMQ82BHNO",
     "action": "import",
     "detail": "批量导入流向: 发货 4, 收货 3, 错误 0",
-    "timestamp": "2026-06-10T12:25:30.460Z"
+    "timestamp": "2026-06-10T12:46:15.588Z"
   },
   {
-    "id": "LOGMQ81KSX0",
-    "action": "import",
-    "detail": "批量导入批次: 成功 0, 跳过 5, 错误 0",
-    "timestamp": "2026-06-10T12:25:30.468Z"
-  },
-  {
-    "id": "LOGMQ81KSX8",
+    "id": "LOGMQ82BHNZ",
     "action": "retry",
-    "detail": "执行重试 2 个任务: 成功 2, 跳过 0, 失败 0",
-    "timestamp": "2026-06-10T12:25:30.476Z"
+    "detail": "执行重试 1 个任务: 成功 1, 跳过 0, 失败 0",
+    "timestamp": "2026-06-10T12:46:15.599Z"
   },
   {
-    "id": "LOGMQ81KSXI",
+    "id": "LOGMQ82BHOA",
     "action": "retry",
-    "detail": "导出失败任务处理记录: E:\\trae-bz\\TraeProjects\\1245\\test\\retry-log.json",
-    "timestamp": "2026-06-10T12:25:30.486Z"
+    "detail": "导出失败任务处理记录 ARC-RTY-20260610-YTCIS: E:\\trae-bz\\TraeProjects\\1245\\test\\retry-log2.json",
+    "timestamp": "2026-06-10T12:46:15.610Z"
   }
 ]

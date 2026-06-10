@@ -1,6 +1,6 @@
 [
   {
-    "id": "BATMQ81GX7G0",
+    "id": "BATMQ8229VA0",
     "batchNo": "BN2024001",
     "product": "阿莫西林胶囊",
     "spec": "0.25g*24粒",
@@ -8,10 +8,10 @@
     "expiry": "2026-01-15",
     "packId": "",
     "status": "registered",
-    "createdAt": "2026-06-10T12:22:29.405Z"
+    "createdAt": "2026-06-10T12:39:05.590Z"
   },
   {
-    "id": "BATMQ81GX7I1",
+    "id": "BATMQ8229VB1",
     "batchNo": "BN2024002",
     "product": "阿莫西林胶囊",
     "spec": "0.25g*24粒",
@@ -19,10 +19,10 @@
     "expiry": "2026-01-20",
     "packId": "",
     "status": "registered",
-    "createdAt": "2026-06-10T12:22:29.406Z"
+    "createdAt": "2026-06-10T12:39:05.591Z"
   },
   {
-    "id": "BATMQ81GX7I2",
+    "id": "BATMQ8229VB2",
     "batchNo": "BN2024003",
     "product": "布洛芬缓释胶囊",
     "spec": "0.3g*20粒",
@@ -30,10 +30,10 @@
     "expiry": "2026-02-01",
     "packId": "",
     "status": "registered",
-    "createdAt": "2026-06-10T12:22:29.406Z"
+    "createdAt": "2026-06-10T12:39:05.591Z"
   },
   {
-    "id": "BATMQ81GX7I3",
+    "id": "BATMQ8229VB3",
     "batchNo": "BN2024004",
     "product": "布洛芬缓释胶囊",
     "spec": "0.3g*20粒",
@@ -41,10 +41,10 @@
     "expiry": "2026-02-10",
     "packId": "",
     "status": "registered",
-    "createdAt": "2026-06-10T12:22:29.406Z"
+    "createdAt": "2026-06-10T12:39:05.591Z"
   },
   {
-    "id": "BATMQ81GX7I4",
+    "id": "BATMQ8229VB4",
     "batchNo": "BN2024005",
     "product": "氯雷他定片",
     "spec": "10mg*6片",
@@ -52,6 +52,6 @@
     "expiry": "2026-02-15",
     "packId": "",
     "status": "registered",
-    "createdAt": "2026-06-10T12:22:29.406Z"
+    "createdAt": "2026-06-10T12:39:05.591Z"
   }
 ]

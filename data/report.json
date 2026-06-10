@@ -1,0 +1,25 @@
+[
+  {
+    "id": "RCLMQ8299M5",
+    "type": "recall",
+    "batchNo": "BN2024001",
+    "product": "",
+    "reason": "含量不合格",
+    "recallList": [
+      {
+        "batchNo": "BN2024001",
+        "product": "阿莫西林胶囊",
+        "reason": "含量不合格",
+        "flows": [
+          {
+            "from": "华北制药",
+            "to": "北京医药公司",
+            "quantity": 1000,
+            "status": "received"
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-06-10T12:44:31.853Z"
+  }
+]

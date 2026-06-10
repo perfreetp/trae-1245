@@ -229,7 +229,14 @@ function filterTasks(options) {
 function exportRetryReport(tasks, output) {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filePath = path.resolve(output || `retry-report-${timestamp}.json`);
+  const ts = new Date();
+  const y = ts.getFullYear();
+  const m = String(ts.getMonth() + 1).padStart(2, '0');
+  const d = String(ts.getDate()).padStart(2, '0');
+  const rand = Math.random().toString(36).slice(2, 7).toUpperCase();
+  const retryArchiveId = `ARC-RTY-${y}${m}${d}-${rand}`;
   const data = {
+    archiveId: retryArchiveId,
     generatedAt: new Date().toISOString(),
     total: tasks.length,
     success: tasks.filter(t => t.status === 'completed').length,
@@ -253,8 +260,25 @@ function exportRetryReport(tasks, output) {
   };
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
-  store.addLog('retry', `导出失败任务处理记录: ${filePath}`);
+  const archives = store.load('archive') || [];
+  archives.push({
+    archiveId: retryArchiveId,
+    fingerprint: '',
+    type: 'retry',
+    format: 'json',
+    output: filePath,
+    summary: {
+      total: data.total,
+      success: data.success,
+      failed: data.failed,
+      pending: data.pending,
+    },
+    createdAt: new Date().toISOString(),
+  });
+  store.save('archive', archives);
+  store.addLog('retry', `导出失败任务处理记录 ${retryArchiveId}: ${filePath}`);
   console.log(chalk.green(`\n✓ 失败任务处理记录已导出: ${filePath}`));
+  console.log(chalk.gray(`  归档编号: ${retryArchiveId}`));
 }
 
 function retryCmd(action, options) {

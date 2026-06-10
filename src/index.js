@@ -19,6 +19,8 @@ const mask = require('./commands/mask');
 const logCmd = require('./commands/log');
 const check = require('./commands/check');
 const auditReport = require('./commands/audit');
+const compareReports = require('./commands/compare');
+const archiveCmd = require('./commands/archive');
 
 const program = new Command();
 
@@ -132,17 +134,45 @@ program
 
 program
   .command('report <action>')
-  .description('报告管理（报告组）- action: audit/export')
-  .option('-f, --file <file>', '待审计的报告文件路径')
+  .description('报告管理（报告组）- action: audit/export/compare')
+  .option('-f, --file <file>', '待审计/导出的报告文件路径')
+  .option('-a, --file-a <file>', '对比命令：报告A（基准/旧）')
+  .option('-b, --file-b <file>', '对比命令：报告B（新/对比）')
+  .option('-o, --output <file>', '导出报告时的输出路径')
+  .option('--batch-no <batchNo>', '导出时按批号筛选')
+  .option('--org <org>', '导出时按机构筛选')
+  .option('--from <date>', '导出时起始日期')
+  .option('--to <date>', '导出时结束日期')
+  .option('-F, --format <format>', '导出格式 json/csv/txt')
   .action((action, options) => {
     if (action === 'audit') {
       auditReport(options.file);
     } else if (action === 'export') {
       exportReport(options);
+    } else if (action === 'compare') {
+      compareReports(options.fileA, options.fileB);
     } else {
       console.log(chalk.red(`未知 report 操作: ${action}`));
-      console.log(chalk.gray('可用操作: audit, export'));
+      console.log(chalk.gray('可用操作: audit / export / compare'));
     }
+  });
+
+program
+  .command('report-compare')
+  .description('对比两份 JSON 报告，查看批次/流向/缺失项/验码/召回变化（报告组）')
+  .option('-a, --file-a <file>', '报告A（基准/旧）')
+  .option('-b, --file-b <file>', '报告B（新/对比）')
+  .action((options) => compareReports(options.fileA, options.fileB));
+
+program
+  .command('archive [action]')
+  .description('归档查询（报告组）- action: list/show')
+  .option('--id <archiveId>', 'show 时指定归档编号')
+  .option('-t, --type <type>', '按类型筛选: export/audit/retry')
+  .option('--from <date>', '创建时间起始 YYYY-MM-DD')
+  .option('--to <date>', '创建时间结束 YYYY-MM-DD')
+  .action((action, options) => {
+    archiveCmd(action, options);
   });
 
 program
@@ -233,6 +263,11 @@ program
     console.log(chalk.white('    durg-trace export -f json --org 华北制药'));
     console.log(chalk.white('    durg-trace report audit -f report.json        # 审计已导出报告'));
     console.log(chalk.white('    durg-trace report audit -f report.txt'));
+    console.log(chalk.white('    durg-trace report audit -f report.csv         # CSV/TXT 也能核对数字'));
+    console.log(chalk.white('    durg-trace report compare -a old.json -b new.json  # 对比重导前后变化'));
+    console.log(chalk.white('    durg-trace archive list                       # 查看所有归档编号'));
+    console.log(chalk.white('    durg-trace archive list -t export --from 2024-01-01'));
+    console.log(chalk.white('    durg-trace archive show --id ARC-20240610-XXXXX # 归档详情+关联追溯'));
     console.log(chalk.white('    durg-trace mask -t account'));
     console.log(chalk.white('    durg-trace mask -t all'));
     console.log(chalk.white('    durg-trace log -a ship -l 10'));

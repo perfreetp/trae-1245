@@ -155,11 +155,19 @@ function filterData(options) {
     account = account.filter(a => inDateRange(dateKey(a), fromDate, toDate));
   }
 
+  const flowBatchNos = new Set(flows.map(f => f.batchNo).filter(Boolean));
+  const hasFlowFilter = org || fromDate || toDate;
+  if (hasFlowFilter && flowBatchNos.size > 0) {
+    batches = batches.filter(b => flowBatchNos.has(b.batchNo));
+    verifies = verifies.filter(v => !v.batchNo || flowBatchNos.has(v.batchNo));
+    reports = reports.filter(r => !r.batchNo || flowBatchNos.has(r.batchNo));
+  }
+
   const affectedPackIds = new Set([
     ...batches.map(b => b.packId).filter(Boolean),
     ...verifies.map(v => v.packId).filter(Boolean),
   ]);
-  if (batchNo || fromDate || toDate) {
+  if (batchNo || fromDate || toDate || org) {
     if (affectedPackIds.size > 0) {
       codepacks = codepacks.filter(c => affectedPackIds.has(c.id));
     }
@@ -214,7 +222,10 @@ function filterData(options) {
       },
       consistency: {
         flowShipsEqDiff: shipCount === matchedCount + unmatchedCount,
-        batchCountMatches: true,
+        batchLinkedToFlows: (() => {
+          const unlinked = batches.filter(b => !flowBatchNos.has(b.batchNo));
+          return unlinked.length === 0;
+        })(),
       },
     },
     account: account.map(a => {
@@ -248,6 +259,8 @@ function toCSV(data) {
   let out = '';
   out += '# 报告元信息\n';
   out += 'generatedAt,' + data.meta.generatedAt + '\n';
+  if (data.meta.archiveId) out += 'archiveId,' + data.meta.archiveId + '\n';
+  if (data.meta.fingerprint) out += 'fingerprint,' + data.meta.fingerprint + '\n';
   if (data.meta.filters.batchNo) out += 'filterBatchNo,' + data.meta.filters.batchNo + '\n';
   if (data.meta.filters.org) out += 'filterOrg,' + data.meta.filters.org + '\n';
   if (data.meta.filters.fromDate) out += 'filterFromDate,' + data.meta.filters.fromDate + '\n';
@@ -257,33 +270,58 @@ function toCSV(data) {
   Object.entries(data.meta.summary).forEach(([k, v]) => out += k + ',' + v + '\n');
 
   out += '\n# 批次 (batches)\n';
+  const expectedBatches = data.meta.summary.batches;
+  out += 'expectedCount,' + expectedBatches + '\n';
   if (data.batches.length) {
     out += Object.keys(data.batches[0]).join(',') + '\n';
     data.batches.forEach(b => out += Object.values(b).map(esc).join(',') + '\n');
   }
+  out += 'actualCount,' + data.batches.length + '\n';
+
   out += '\n# 流向 (flows)\n';
+  const expectedFlows = data.meta.summary.flows;
+  out += 'expectedCount,' + expectedFlows + '\n';
   if (data.flows.length) {
     out += Object.keys(data.flows[0]).join(',') + '\n';
     data.flows.forEach(f => out += Object.values(f).map(esc).join(',') + '\n');
   }
+  out += 'actualCount,' + data.flows.length + '\n';
+
   out += '\n# 上下游差异 unmatched\n';
+  out += 'expectedCount,' + data.meta.summary.unmatchedFlows + '\n';
   out += 'batchNo,from,to,shipQty,shipDate,status,shipFlowId\n';
   data.diff.unmatched.forEach(u => out += [u.batchNo, u.from, u.to, u.shipQty, u.shipDate, u.status, u.shipFlowId].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.diff.unmatched.length + '\n';
+
   out += '\n# 上下游差异 matched\n';
+  out += 'expectedCount,' + data.meta.summary.matchedFlows + '\n';
   out += 'batchNo,from,to,shipQty,recvQty,shipDate,recvDate,shipFlowId,recvId\n';
   data.diff.matched.forEach(m => out += [m.batchNo, m.from, m.to, m.shipQty, m.recvQty, m.shipDate, m.recvDate, m.shipFlowId, m.recvId].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.diff.matched.length + '\n';
+
   out += '\n# 数量差异 qtyMismatch\n';
+  out += 'expectedCount,' + data.meta.summary.qtyMismatches + '\n';
   out += 'batchNo,shipQty,recvQty,diff\n';
   data.diff.qtyMismatch.forEach(q => out += [q.batchNo, q.shipQty, q.recvQty, q.diff].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.diff.qtyMismatch.length + '\n';
+
   out += '\n# 抽样验码 verify\n';
+  out += 'expectedCount,' + data.meta.summary.verifies + '\n';
   out += 'id,packName,batchNo,sampleSize,totalCodes,sampledAt,passRate\n';
   data.verify.forEach(v => out += [v.id, v.packName, v.batchNo, v.sampleSize, v.totalCodes, v.sampledAt, v.passRate].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.verify.length + '\n';
+
   out += '\n# 召回清单 recall\n';
+  out += 'expectedCount,' + data.meta.summary.recalls + '\n';
   out += 'id,batchNo,product,reason,createdAt,batchCount\n';
   data.recall.forEach(r => out += [r.id, r.batchNo, r.product, r.reason, r.createdAt, r.batchCount].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.recall.length + '\n';
+
   out += '\n# 缺失项 missing\n';
+  out += 'expectedCount,' + data.meta.summary.missingItems + '\n';
   out += 'level,group,msg\n';
   data.missing.forEach(m => out += [m.level, m.group, m.msg].map(esc).join(',') + '\n');
+  out += 'actualCount,' + data.missing.length + '\n';
   return out;
 }
 
@@ -293,6 +331,8 @@ function toTXT(data) {
   let out = '';
   out += '药品追溯合规报告\n';
   out += `生成时间: ${data.meta.generatedAt}\n`;
+  if (data.meta.archiveId) out += `归档编号: ${data.meta.archiveId}\n`;
+  if (data.meta.fingerprint) out += `报告指纹: ${data.meta.fingerprint}\n`;
   const f = data.meta.filters;
   const applied = [];
   if (f.batchNo) applied.push(`批号: ${f.batchNo}`);
@@ -302,11 +342,14 @@ function toTXT(data) {
 
   const s = data.meta.summary;
   out += `数据概要: 账号 ${s.accounts}, 码包 ${s.codepacks}, 批次 ${s.batches}, 流向 ${s.flows} (发${s.ships}/收${s.receives}), 验码 ${s.verifies}, 召回 ${s.recalls}\n`;
+  out += `缺失项: ${s.missingItems}, 差异: 匹配${s.matchedFlows} 未匹配${s.unmatchedFlows} 数量差${s.qtyMismatches}\n`;
   out += `一致性: 匹配 ${s.matchedFlows} + 未匹配 ${s.unmatchedFlows} = 发货总数 ${s.ships}  ${s.flowShipsEqDiff ? '✓' : '✗'}\n`;
 
   out += bar('一、缺失项检查 (check)');
-  if (data.missing.length === 0) out += '  ✓ 所有检查项通过\n';
+  out += `概要期望: ${s.missingItems} 条\n`;
+  if (data.missing.length === 0) out += '  实际: 0 条  ✓ 所有检查项通过\n';
   else {
+    out += `  实际: ${data.missing.length} 条  ${data.missing.length === s.missingItems ? '✓ 一致' : '✗ 不一致'}\n\n`;
     data.missing.forEach(m => {
       const icon = { error: '✗', warn: '⚠', info: 'ℹ' }[m.level];
       out += `  ${icon} [${m.group}] ${m.msg}\n`;
@@ -314,16 +357,19 @@ function toTXT(data) {
   }
 
   out += bar('二、批次列表');
-  if (data.batches.length === 0) out += '  (空)\n';
+  out += `概要期望: ${s.batches} 条\n`;
+  if (data.batches.length === 0) out += '  实际: 0 条  (空)\n';
   else {
+    out += `  实际: ${data.batches.length} 条  ${data.batches.length === s.batches ? '✓ 一致' : '✗ 不一致'}\n\n`;
     data.batches.forEach(b => {
       out += `  批号 ${b.batchNo}  产品: ${fmt(b.product)}  规格: ${fmt(b.spec)}  生产: ${fmt(b.prodDate)}  有效期至: ${fmt(b.expiry)}\n`;
     });
   }
 
   out += bar('三、上下游流向比对 (diff)');
+  out += `概要期望: 发货 ${s.ships} 条, 收货 ${s.receives} 条, 匹配 ${s.matchedFlows}, 未匹配 ${s.unmatchedFlows}, 数量差 ${s.qtyMismatches}\n`;
   out += `  发货记录: ${data.diff.shipTotal}  收货记录: ${data.diff.recvTotal}\n`;
-  out += `  已匹配 ${data.diff.matched.length} 条，未匹配 ${data.diff.unmatched.length} 条，数量差异 ${data.diff.qtyMismatch.length} 条\n\n`;
+  out += `  已匹配 ${data.diff.matched.length}/${s.matchedFlows} 条，未匹配 ${data.diff.unmatched.length}/${s.unmatchedFlows} 条，数量差异 ${data.diff.qtyMismatch.length}/${s.qtyMismatches} 条\n\n`;
   if (data.diff.matched.length) {
     out += '  【已匹配】\n';
     data.diff.matched.forEach(m => out += `    ${m.batchNo}  ${m.from} → ${m.to}  发${m.shipQty}/收${m.recvQty}  ${m.shipDate} ~ ${m.recvDate}\n`);
@@ -338,8 +384,10 @@ function toTXT(data) {
   }
 
   out += bar('四、抽样验码记录 (verify)');
-  if (data.verify.length === 0) out += '  (无)\n';
+  out += `概要期望: ${s.verifies} 条\n`;
+  if (data.verify.length === 0) out += '  实际: 0 条  (无)\n';
   else {
+    out += `  实际: ${data.verify.length} 条  ${data.verify.length === s.verifies ? '✓ 一致' : '✗ 不一致'}\n\n`;
     data.verify.forEach(v => {
       out += `  验码ID ${v.id}  码包:${v.packName}  批号:${v.batchNo || '-'}  ${v.sampleSize}/${v.totalCodes}  合格率${v.passRate}\n`;
       if (v.results && v.results.length) {
@@ -350,8 +398,10 @@ function toTXT(data) {
   }
 
   out += bar('五、召回清单 (recall)');
-  if (data.recall.length === 0) out += '  (无)\n';
+  out += `概要期望: ${s.recalls} 条\n`;
+  if (data.recall.length === 0) out += '  实际: 0 条  (无)\n';
   else {
+    out += `  实际: ${data.recall.length} 条  ${data.recall.length === s.recalls ? '✓ 一致' : '✗ 不一致'}\n\n`;
     data.recall.forEach(r => {
       out += `  召回ID ${r.id}  批号:${r.batchNo || '-'}  产品:${r.product || '-'}  原因:${r.reason}\n`;
       (r.summary || []).forEach(s2 => out += `    · 批号 ${s2.batchNo}  产品:${s2.product}  流向${s2.flows}条\n`);
@@ -364,7 +414,36 @@ function toTXT(data) {
   Object.entries(actionCount).forEach(([k, v]) => out += `  ${k}: ${v} 次\n`);
   out += '\n═══════════════════════════════════════════════════════════\n';
   out += `报告生成完成 - ${data.meta.generatedAt}\n`;
+  if (data.meta.archiveId) out += `归档编号: ${data.meta.archiveId}\n`;
+  if (data.meta.fingerprint) out += `报告指纹: ${data.meta.fingerprint}\n`;
   return out;
+}
+
+function sha1(str) {
+  const crypto = require('crypto');
+  return crypto.createHash('sha1').update(str || '').digest('hex');
+}
+
+function computeFingerprint(data) {
+  const snap = {
+    summary: data.meta.summary,
+    filters: data.meta.filters,
+    batches: data.batches.map(b => b.batchNo).sort(),
+    flows: data.flows.map(f => `${f.type}:${f.batchNo}:${f.from}:${f.to}:${f.quantity}:${f.date}`).sort(),
+    matched: (data.diff.matched || []).map(m => `${m.batchNo}:${m.from}:${m.to}:${m.shipQty}:${m.recvQty}`).sort(),
+    unmatched: (data.diff.unmatched || []).map(u => `${u.batchNo}:${u.from}:${u.to}:${u.shipQty}`).sort(),
+    missing: (data.missing || []).map(m => `${m.group}:${m.msg}`).sort(),
+  };
+  return sha1(JSON.stringify(snap)).slice(0, 16).toUpperCase();
+}
+
+function generateArchiveId() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  const rand = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `ARC-${y}${m}${d}-${rand}`;
 }
 
 function exportReport(options) {
@@ -372,6 +451,10 @@ function exportReport(options) {
   const output = options.output || '';
 
   const data = filterData(options);
+  const fingerprint = computeFingerprint(data);
+  const archiveId = generateArchiveId();
+  data.meta.fingerprint = fingerprint;
+  data.meta.archiveId = archiveId;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
 
   let content = '';
@@ -390,19 +473,36 @@ function exportReport(options) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, 'utf-8');
 
+  const archives = store.load('archive') || [];
+  archives.push({
+    archiveId,
+    fingerprint,
+    type: 'export',
+    format,
+    output: filePath,
+    filters: { ...data.meta.filters },
+    summary: { ...data.meta.summary },
+    createdAt: new Date().toISOString(),
+  });
+  store.save('archive', archives);
+
   store.addLog('export',
-    `导出合规报告 格式=${format} 批号=${options.batchNo || '-'} 机构=${options.org || '-'} 日期=${options.from || '-'}-${options.to || '-'} → ${filePath}`
+    `导出合规报告 ${archiveId} 指纹=${fingerprint} 格式=${format} 批号=${options.batchNo || '-'} 机构=${options.org || '-'} 日期=${options.from || '-'}-${options.to || '-'} → ${filePath}`
   );
 
   const s = data.meta.summary;
   console.log(chalk.green('✓ 合规报告导出完成'));
+  console.log(chalk.white(`  归档编号: ${archiveId}`));
+  console.log(chalk.white(`  报告指纹: ${fingerprint}`));
   console.log(chalk.white(`  路径: ${filePath}`));
   console.log(chalk.white(`  格式: ${format.toUpperCase()}`));
   console.log(chalk.white(`  批次: ${s.batches}  流向: ${s.flows} (发${s.ships}/收${s.receives})`));
   console.log(chalk.white(`  验码: ${s.verifies}  召回: ${s.recalls}  缺失项: ${s.missingItems}`));
   console.log(chalk.white(`  差异: 匹配${s.matchedFlows} 未匹配${s.unmatchedFlows} 数量差${s.qtyMismatches}`));
-  const ok = data.meta.consistency.flowShipsEqDiff;
-  console.log(ok ? chalk.green('  一致性: ✓ 发货总数 = 匹配+未匹配') : chalk.red('  一致性: ✗ 发货总数 ≠ 匹配+未匹配，请重导'));
+  const ok1 = data.meta.consistency.flowShipsEqDiff;
+  const ok2 = data.meta.consistency.batchLinkedToFlows;
+  console.log(ok1 ? chalk.green('  一致性: ✓ 发货总数 = 匹配+未匹配') : chalk.red('  一致性: ✗ 发货总数 ≠ 匹配+未匹配'));
+  if (!ok2) console.log(chalk.yellow('  一致性: ⚠ 存在未关联流向的批次'));
   if (data.meta.filters.batchNo) console.log(chalk.gray(`  筛选批号: ${data.meta.filters.batchNo}`));
   if (data.meta.filters.org) console.log(chalk.gray(`  筛选机构: ${data.meta.filters.org}`));
   if (data.meta.filters.fromDate || data.meta.filters.toDate) console.log(chalk.gray(`  日期范围: ${data.meta.filters.fromDate || '...'} ~ ${data.meta.filters.toDate || '...'}`));
