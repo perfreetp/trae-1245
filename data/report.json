@@ -1,0 +1,25 @@
+[
+  {
+    "id": "RCLMQ80MISV",
+    "type": "recall",
+    "batchNo": "BN2024003",
+    "product": "",
+    "reason": "包装批次印刷错误",
+    "recallList": [
+      {
+        "batchNo": "BN2024003",
+        "product": "布洛芬缓释胶囊",
+        "reason": "包装批次印刷错误",
+        "flows": [
+          {
+            "from": "华北制药",
+            "to": "广州医药公司",
+            "quantity": 800,
+            "status": "reported"
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-06-10T11:58:51.055Z"
+  }
+]

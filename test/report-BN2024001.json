@@ -1,0 +1,215 @@
+{
+  "meta": {
+    "generatedAt": "2026-06-10T11:59:04.886Z",
+    "filters": {
+      "batchNo": "BN2024001",
+      "org": "",
+      "fromDate": "",
+      "toDate": ""
+    },
+    "summary": {
+      "accounts": 1,
+      "codepacks": 1,
+      "batches": 1,
+      "flows": 2,
+      "verifies": 1,
+      "recalls": 0
+    }
+  },
+  "account": [
+    {
+      "id": "ACCMQ80MIMC",
+      "username": "zhangsan",
+      "org": "华北制药",
+      "role": "operator",
+      "loginAt": "2026-06-10T11:58:50.820Z",
+      "createdAt": "2026-06-10T11:58:50.822Z"
+    }
+  ],
+  "codepacks": [
+    {
+      "id": "CPMQ80L8Q3",
+      "name": "阿莫西林码包",
+      "source": "E:\\trae-bz\\TraeProjects\\1245\\test\\codes.txt",
+      "total": 10,
+      "importedAt": "2026-06-10T11:57:51.339Z",
+      "bound": false
+    }
+  ],
+  "batches": [
+    {
+      "id": "BATMQ80KZ610",
+      "batchNo": "BN2024001",
+      "packId": "",
+      "product": "阿莫西林胶囊",
+      "spec": "0.25g*24粒",
+      "prodDate": "2024-01-15",
+      "expiry": "2026-01-15",
+      "status": "registered",
+      "createdAt": "2026-06-10T11:57:38.953Z"
+    }
+  ],
+  "flows": [
+    {
+      "id": "FLWMQ80L8N40",
+      "type": "ship",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 1000,
+      "date": "2024-03-01",
+      "status": "received",
+      "remark": "3月上旬首批发货",
+      "createdAt": "2026-06-10T11:57:51.232Z",
+      "receivedAt": "2026-06-10T11:57:51.234Z"
+    },
+    {
+      "id": "RCVMQ80L8N63",
+      "type": "receive",
+      "shipFlowId": "FLWMQ80L8N40",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 998,
+      "receivedBy": "李经理",
+      "date": "2024-03-04",
+      "remark": "实收998",
+      "createdAt": "2026-06-10T11:57:51.234Z"
+    }
+  ],
+  "verify": [
+    {
+      "id": "VRFMQ80MIPI",
+      "packId": "CPMQ80L8Q3",
+      "packName": "阿莫西林码包",
+      "batchNo": "BN2024001",
+      "sampleSize": 5,
+      "totalCodes": 10,
+      "sampledAt": "2026-06-10T11:58:50.934Z",
+      "results": [
+        {
+          "index": 4,
+          "code": "8381000100000005",
+          "status": "valid"
+        },
+        {
+          "index": 1,
+          "code": "8381000100000002",
+          "status": "valid"
+        },
+        {
+          "index": 5,
+          "code": "8381000100000006",
+          "status": "valid"
+        },
+        {
+          "index": 9,
+          "code": "8381000100000010",
+          "status": "valid"
+        },
+        {
+          "index": 3,
+          "code": "8381000100000004",
+          "status": "valid"
+        }
+      ],
+      "passRate": "100%"
+    }
+  ],
+  "recall": [],
+  "diff": {
+    "matched": [
+      {
+        "batchNo": "BN2024001",
+        "from": "华北制药",
+        "to": "北京医药公司",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "shipDate": "2024-03-01",
+        "recvDate": "2024-03-04",
+        "shipFlowId": "FLWMQ80L8N40",
+        "recvId": "RCVMQ80L8N63"
+      }
+    ],
+    "unmatched": [],
+    "qtyMismatch": [
+      {
+        "batchNo": "BN2024001",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "diff": -2
+      }
+    ],
+    "shipTotal": 4,
+    "recvTotal": 3
+  },
+  "missing": [
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024001 未关联码包"
+    }
+  ],
+  "logs": [
+    {
+      "id": "LOGMQ80KZ63",
+      "action": "import",
+      "detail": "批量导入批次: 成功 5, 跳过 0, 错误 0",
+      "timestamp": "2026-06-10T11:57:38.955Z"
+    },
+    {
+      "id": "LOGMQ80L8N7",
+      "action": "import",
+      "detail": "批量导入流向: 发货 4, 收货 3, 错误 0",
+      "timestamp": "2026-06-10T11:57:51.235Z"
+    },
+    {
+      "id": "LOGMQ80L8Q5",
+      "action": "import",
+      "detail": "导入码包 阿莫西林码包, 共 10 个追溯码",
+      "timestamp": "2026-06-10T11:57:51.341Z"
+    },
+    {
+      "id": "LOGMQ80LXUB",
+      "action": "import",
+      "detail": "批量导入批次: 成功 0, 跳过 5, 错误 0",
+      "timestamp": "2026-06-10T11:58:23.891Z"
+    },
+    {
+      "id": "LOGMQ80LXUL",
+      "action": "retry",
+      "detail": "执行重试 1 个任务: 成功 1, 失败 0",
+      "timestamp": "2026-06-10T11:58:23.901Z"
+    },
+    {
+      "id": "LOGMQ80M85A",
+      "action": "check",
+      "detail": "合规检查: 1 错误, 7 警告, 0 提示",
+      "timestamp": "2026-06-10T11:58:37.246Z"
+    },
+    {
+      "id": "LOGMQ80MIME",
+      "action": "login",
+      "detail": "新用户 zhangsan 登录注册",
+      "timestamp": "2026-06-10T11:58:50.822Z"
+    },
+    {
+      "id": "LOGMQ80MIPN",
+      "action": "verify",
+      "detail": "抽样验码: 阿莫西林码包, 抽样 5/10",
+      "timestamp": "2026-06-10T11:58:50.939Z"
+    },
+    {
+      "id": "LOGMQ80MISW",
+      "action": "recall",
+      "detail": "生成召回清单: 1 个批次, 原因: 包装批次印刷错误",
+      "timestamp": "2026-06-10T11:58:51.056Z"
+    },
+    {
+      "id": "LOGMQ80MTE2",
+      "action": "export",
+      "detail": "导出合规报告 格式=txt 批号=- 机构=- 日期=--- → E:\\trae-bz\\TraeProjects\\1245\\test\\report-full.txt",
+      "timestamp": "2026-06-10T11:59:04.778Z"
+    }
+  ]
+}

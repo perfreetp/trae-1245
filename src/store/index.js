@@ -50,18 +50,20 @@ function addLog(action, detail) {
   save('log', logs);
 }
 
-function addRetry(taskType, taskDetail, errorMsg) {
+function addRetry(taskType, payload, errorMsg) {
   const retries = load('retry');
   retries.push({
-    id: 'RTY' + Date.now().toString(36).toUpperCase(),
+    id: 'RTY' + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 1000).toString(36).toUpperCase(),
     taskType,
-    taskDetail,
+    payload,
     errorMsg,
     status: 'pending',
     createdAt: new Date().toISOString(),
     retryCount: 0,
+    history: [],
   });
   save('retry', retries);
+  return retries[retries.length - 1];
 }
 
 module.exports = { load, save, addLog, addRetry, DATA_DIR };

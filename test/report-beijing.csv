@@ -1,0 +1,45 @@
+# 报告元信息
+generatedAt,2026-06-10T11:59:04.994Z
+filterOrg,北京医药公司
+
+# 批次 (batches)
+id,batchNo,packId,product,spec,prodDate,expiry,status,createdAt
+BATMQ80KZ610,BN2024001,,阿莫西林胶囊,0.25g*24粒,2024-01-15,2026-01-15,registered,2026-06-10T11:57:38.953Z
+BATMQ80KZ621,BN2024002,,阿莫西林胶囊,0.25g*24粒,2024-01-20,2026-01-20,registered,2026-06-10T11:57:38.954Z
+BATMQ80KZ622,BN2024003,,布洛芬缓释胶囊,0.3g*20粒,2024-02-01,2026-02-01,registered,2026-06-10T11:57:38.954Z
+BATMQ80KZ623,BN2024004,,布洛芬缓释胶囊,0.3g*20粒,2024-02-10,2026-02-10,registered,2026-06-10T11:57:38.954Z
+BATMQ80KZ624,BN2024005,,氯雷他定片,10mg*6片,2024-02-15,2026-02-15,registered,2026-06-10T11:57:38.954Z
+
+# 流向 (flows)
+id,type,batchNo,from,to,quantity,date,status,remark,createdAt,receivedAt
+FLWMQ80L8N40,ship,BN2024001,华北制药,北京医药公司,1000,2024-03-01,received,3月上旬首批发货,2026-06-10T11:57:51.232Z,2026-06-10T11:57:51.234Z
+RCVMQ80L8N63,receive,FLWMQ80L8N40,BN2024001,华北制药,北京医药公司,998,李经理,2024-03-04,实收998,2026-06-10T11:57:51.234Z
+
+# 上下游差异 unmatched
+batchNo,from,to,shipQty,shipDate,status,shipFlowId
+
+# 上下游差异 matched
+batchNo,from,to,shipQty,recvQty,shipDate,recvDate,shipFlowId,recvId
+BN2024001,华北制药,北京医药公司,1000,998,2024-03-01,2024-03-04,FLWMQ80L8N40,RCVMQ80L8N63
+
+# 数量差异 qtyMismatch
+batchNo,shipQty,recvQty,diff
+BN2024001,1000,998,-2
+
+# 抽样验码 verify
+id,packName,batchNo,sampleSize,totalCodes,sampledAt,passRate
+VRFMQ80MIPI,阿莫西林码包,BN2024001,5,10,2026-06-10T11:58:50.934Z,100%
+
+# 召回清单 recall
+id,batchNo,product,reason,createdAt,batchCount
+RCLMQ80MISV,BN2024003,,包装批次印刷错误,2026-06-10T11:58:51.055Z,1
+
+# 缺失项 missing
+level,group,msg
+warn,码包,码包 阿莫西林码包 未绑定
+warn,批次,批号 BN2024001 未关联码包
+warn,批次,批号 BN2024002 未关联码包
+warn,批次,批号 BN2024003 未关联码包
+warn,批次,批号 BN2024004 未关联码包
+warn,批次,批号 BN2024005 未关联码包
+warn,流向,批号 BN2024003 发货至 广州医药公司 未确认收货

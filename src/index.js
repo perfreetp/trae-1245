@@ -41,8 +41,9 @@ program
 
 program
   .command('import <file>')
-  .description('导入码包文件，支持 txt/csv/json 格式（码包组）')
-  .option('-n, --name <name>', '码包名称，默认取文件名')
+  .description('批量导入文件（码包/流向/批次），根据 --kind 自动识别：codepack/flow/batch（码包组）')
+  .option('-n, --name <name>', '码包名称，默认取文件名（仅 codepack 生效）')
+  .option('-k, --kind <kind>', '文件类型: codepack(码包) / flow(流向) / batch(批次)，默认自动识别', 'auto')
   .action(importCodes);
 
 program
@@ -112,10 +113,13 @@ program
 
 program
   .command('export')
-  .description('导出报告（报告组）')
+  .description('导出完整合规报告（报告组），支持批号/机构/日期筛选，包含缺失项、上下游差异、验码、召回')
   .option('-f, --format <format>', '导出格式: json/csv/txt', 'json')
-  .option('-t, --type <type>', '数据类型: all/account/codepack/batch/flow/verify/report', 'all')
   .option('-o, --output <file>', '输出文件路径')
+  .option('--batch-no <batchNo>', '按批号筛选')
+  .option('--org <org>', '按机构（发货方/收货方）筛选')
+  .option('--from <date>', '按日期范围起始 YYYY-MM-DD')
+  .option('--to <date>', '按日期范围结束 YYYY-MM-DD')
   .action(exportReport);
 
 program
@@ -137,49 +141,82 @@ program
   .action(check);
 
 program
-  .command('help-examples')
-  .description('查看使用示例')
+  .command('help')
+  .description('查看按 6 组分类的使用示例（账号/码包/批次/流向/核验/报告）')
   .action(() => {
     console.log(chalk.cyan('═══════════════════════════════════════════════════'));
-    console.log(chalk.cyan('  药品追溯工具 - 使用示例'));
+    console.log(chalk.cyan('  药品追溯工具 durg-trace  使用示例'));
     console.log(chalk.cyan('═══════════════════════════════════════════════════'));
+    console.log(chalk.gray('  用法: durg-trace <命令> [选项]'));
+    console.log(chalk.gray('  输入 durg-trace --help 可查看所有命令参数'));
     console.log('');
-    console.log(chalk.yellow('  【账号组】'));
-    console.log(chalk.white('  durg-trace login zhangsan -p 123456 -o 华北制药'));
-    console.log(chalk.white('  durg-trace config set org 华北制药'));
-    console.log(chalk.white('  durg-trace config get org'));
-    console.log(chalk.white('  durg-trace config list'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【账号组】login / config                       │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace login zhangsan -p 123456 -o 华北制药'));
+    console.log(chalk.white('    durg-trace config list'));
+    console.log(chalk.white('    durg-trace config set org 华北制药'));
+    console.log(chalk.white('    durg-trace config set contact 张三'));
+    console.log(chalk.white('    durg-trace config get org'));
     console.log('');
-    console.log(chalk.yellow('  【码包组】'));
-    console.log(chalk.white('  durg-trace import codes.txt -n 阿莫西林码包'));
-    console.log(chalk.white('  durg-trace import codes.json'));
-    console.log(chalk.white('  durg-trace bind CPXXXX --product P001 --spec 0.25g --level box'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【码包组】import / bind                         │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace import codes.txt -n 阿莫西林码包'));
+    console.log(chalk.white('    durg-trace import codes.json --kind codepack'));
+    console.log(chalk.white('    durg-trace import flow.csv --kind flow'));
+    console.log(chalk.white('    durg-trace import batch.csv --kind batch'));
+    console.log(chalk.white('    durg-trace bind'));
+    console.log(chalk.white('    durg-trace bind CPXXXX --product P001 --spec 0.25g --level box'));
     console.log('');
-    console.log(chalk.yellow('  【批次组】'));
-    console.log(chalk.white('  durg-trace batch register --batch-no BN2024001 --product 阿莫西林'));
-    console.log(chalk.white('  durg-trace batch list'));
-    console.log(chalk.white('  durg-trace check'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【批次组】batch / check                         │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace batch register --batch-no BN2024001 --product 阿莫西林'));
+    console.log(chalk.white('    durg-trace batch list'));
+    console.log(chalk.white('    durg-trace batch detail --batch-no BN2024001'));
+    console.log(chalk.white('    durg-trace check'));
     console.log('');
-    console.log(chalk.yellow('  【流向组】'));
-    console.log(chalk.white('  durg-trace ship --batch-no BN2024001 --from 华北制药 --to 北京医药 --quantity 1000'));
-    console.log(chalk.white('  durg-trace receive --batch-no BN2024001'));
-    console.log(chalk.white('  durg-trace diff'));
-    console.log(chalk.white('  durg-trace diff --batch-no BN2024001'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【流向组】ship / receive / diff                 │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace ship --batch-no BN2024001 --from 华北制药 --to 北京医药 --quantity 1000'));
+    console.log(chalk.white('    durg-trace receive --batch-no BN2024001'));
+    console.log(chalk.white('    durg-trace receive --flow-id FLWXXXX --received-by 李经理'));
+    console.log(chalk.white('    durg-trace diff'));
+    console.log(chalk.white('    durg-trace diff --batch-no BN2024001'));
     console.log('');
-    console.log(chalk.yellow('  【核验组】'));
-    console.log(chalk.white('  durg-trace verify --pack CPXXXX --count 10'));
-    console.log(chalk.white('  durg-trace recall --batch-no BN2024001 --reason 含量不达标'));
-    console.log(chalk.white('  durg-trace retry list'));
-    console.log(chalk.white('  durg-trace retry run'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【核验组】verify / recall / retry               │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace verify --pack CPXXXX --count 10 --batch-no BN2024001'));
+    console.log(chalk.white('    durg-trace recall --batch-no BN2024001 --reason 含量不达标'));
+    console.log(chalk.white('    durg-trace recall --product 阿莫西林 --reason 包装瑕疵'));
+    console.log(chalk.white('    durg-trace retry list'));
+    console.log(chalk.white('    durg-trace retry run'));
+    console.log(chalk.white('    durg-trace retry run --id RTYXXXX'));
+    console.log(chalk.white('    durg-trace retry clear'));
     console.log('');
-    console.log(chalk.yellow('  【报告组】'));
-    console.log(chalk.white('  durg-trace export -f json -o report.json'));
-    console.log(chalk.white('  durg-trace export -f csv -t flow'));
-    console.log(chalk.white('  durg-trace mask -t account'));
-    console.log(chalk.white('  durg-trace log -a ship -l 10'));
+    console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
+    console.log(chalk.yellow('  │ 【报告组】export / mask / log                   │'));
+    console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
+    console.log(chalk.white('    durg-trace export -f json -o report.json'));
+    console.log(chalk.white('    durg-trace export -f csv --batch-no BN2024001'));
+    console.log(chalk.white('    durg-trace export -f txt --from 2024-01-01 --to 2024-12-31'));
+    console.log(chalk.white('    durg-trace export -f json --org 华北制药'));
+    console.log(chalk.white('    durg-trace mask -t account'));
+    console.log(chalk.white('    durg-trace mask -t all'));
+    console.log(chalk.white('    durg-trace log -a ship -l 10'));
+    console.log(chalk.white('    durg-trace log'));
     console.log('');
-    console.log(chalk.gray('  数据分组: 账号(login/config) 码包(import/bind) 批次(batch/check)'));
-    console.log(chalk.gray('           流向(ship/receive/diff) 核验(verify/recall/retry) 报告(export/mask/log)'));
+    console.log(chalk.gray('  说明: 所有操作产生的 JSON 数据存放在 data/ 目录下'));
+    console.log(chalk.gray('  导入失败的任务可修好文件后执行 retry run 重新执行'));
+  });
+
+program
+  .on('--help', () => {
+    console.log('');
+    console.log('  输入 durg-trace help 查看按 6 组分类的详细使用示例');
   });
 
 program.parse(process.argv);

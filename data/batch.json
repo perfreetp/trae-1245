@@ -1,0 +1,57 @@
+[
+  {
+    "id": "BATMQ80KZ610",
+    "batchNo": "BN2024001",
+    "packId": "",
+    "product": "阿莫西林胶囊",
+    "spec": "0.25g*24粒",
+    "prodDate": "2024-01-15",
+    "expiry": "2026-01-15",
+    "status": "registered",
+    "createdAt": "2026-06-10T11:57:38.953Z"
+  },
+  {
+    "id": "BATMQ80KZ621",
+    "batchNo": "BN2024002",
+    "packId": "",
+    "product": "阿莫西林胶囊",
+    "spec": "0.25g*24粒",
+    "prodDate": "2024-01-20",
+    "expiry": "2026-01-20",
+    "status": "registered",
+    "createdAt": "2026-06-10T11:57:38.954Z"
+  },
+  {
+    "id": "BATMQ80KZ622",
+    "batchNo": "BN2024003",
+    "packId": "",
+    "product": "布洛芬缓释胶囊",
+    "spec": "0.3g*20粒",
+    "prodDate": "2024-02-01",
+    "expiry": "2026-02-01",
+    "status": "registered",
+    "createdAt": "2026-06-10T11:57:38.954Z"
+  },
+  {
+    "id": "BATMQ80KZ623",
+    "batchNo": "BN2024004",
+    "packId": "",
+    "product": "布洛芬缓释胶囊",
+    "spec": "0.3g*20粒",
+    "prodDate": "2024-02-10",
+    "expiry": "2026-02-10",
+    "status": "registered",
+    "createdAt": "2026-06-10T11:57:38.954Z"
+  },
+  {
+    "id": "BATMQ80KZ624",
+    "batchNo": "BN2024005",
+    "packId": "",
+    "product": "氯雷他定片",
+    "spec": "10mg*6片",
+    "prodDate": "2024-02-15",
+    "expiry": "2026-02-15",
+    "status": "registered",
+    "createdAt": "2026-06-10T11:57:38.954Z"
+  }
+]

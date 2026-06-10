@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "generatedAt": "2026-06-10T11:59:05.099Z",
+    "filters": {
+      "batchNo": "",
+      "org": "",
+      "fromDate": "2024-03-01",
+      "toDate": "2024-03-31"
+    },
+    "summary": {
+      "accounts": 1,
+      "codepacks": 1,
+      "batches": 0,
+      "flows": 5,
+      "verifies": 0,
+      "recalls": 0
+    }
+  },
+  "account": [
+    {
+      "id": "ACCMQ80MIMC",
+      "username": "zhangsan",
+      "org": "华北制药",
+      "role": "operator",
+      "loginAt": "2026-06-10T11:58:50.820Z",
+      "createdAt": "2026-06-10T11:58:50.822Z"
+    }
+  ],
+  "codepacks": [
+    {
+      "id": "CPMQ80L8Q3",
+      "name": "阿莫西林码包",
+      "source": "E:\\trae-bz\\TraeProjects\\1245\\test\\codes.txt",
+      "total": 10,
+      "importedAt": "2026-06-10T11:57:51.339Z",
+      "bound": false
+    }
+  ],
+  "batches": [],
+  "flows": [
+    {
+      "id": "FLWMQ80L8N40",
+      "type": "ship",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 1000,
+      "date": "2024-03-01",
+      "status": "received",
+      "remark": "3月上旬首批发货",
+      "createdAt": "2026-06-10T11:57:51.232Z",
+      "receivedAt": "2026-06-10T11:57:51.234Z"
+    },
+    {
+      "id": "FLWMQ80L8N61",
+      "type": "ship",
+      "batchNo": "BN2024002",
+      "from": "华北制药",
+      "to": "上海医药公司",
+      "quantity": 500,
+      "date": "2024-03-05",
+      "status": "received",
+      "remark": "",
+      "createdAt": "2026-06-10T11:57:51.234Z",
+      "receivedAt": "2026-06-10T11:57:51.234Z"
+    },
+    {
+      "id": "FLWMQ80L8N62",
+      "type": "ship",
+      "batchNo": "BN2024003",
+      "from": "华北制药",
+      "to": "广州医药公司",
+      "quantity": 800,
+      "date": "2024-03-10",
+      "status": "reported",
+      "remark": "",
+      "createdAt": "2026-06-10T11:57:51.234Z"
+    },
+    {
+      "id": "RCVMQ80L8N63",
+      "type": "receive",
+      "shipFlowId": "FLWMQ80L8N40",
+      "batchNo": "BN2024001",
+      "from": "华北制药",
+      "to": "北京医药公司",
+      "quantity": 998,
+      "receivedBy": "李经理",
+      "date": "2024-03-04",
+      "remark": "实收998",
+      "createdAt": "2026-06-10T11:57:51.234Z"
+    },
+    {
+      "id": "RCVMQ80L8N64",
+      "type": "receive",
+      "shipFlowId": "FLWMQ80L8N61",
+      "batchNo": "BN2024002",
+      "from": "华北制药",
+      "to": "上海医药公司",
+      "quantity": 500,
+      "receivedBy": "王经理",
+      "date": "2024-03-07",
+      "remark": "",
+      "createdAt": "2026-06-10T11:57:51.234Z"
+    }
+  ],
+  "verify": [],
+  "recall": [],
+  "diff": {
+    "matched": [
+      {
+        "batchNo": "BN2024001",
+        "from": "华北制药",
+        "to": "北京医药公司",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "shipDate": "2024-03-01",
+        "recvDate": "2024-03-04",
+        "shipFlowId": "FLWMQ80L8N40",
+        "recvId": "RCVMQ80L8N63"
+      },
+      {
+        "batchNo": "BN2024002",
+        "from": "华北制药",
+        "to": "上海医药公司",
+        "shipQty": 500,
+        "recvQty": 500,
+        "shipDate": "2024-03-05",
+        "recvDate": "2024-03-07",
+        "shipFlowId": "FLWMQ80L8N61",
+        "recvId": "RCVMQ80L8N64"
+      },
+      {
+        "batchNo": "BN2024004",
+        "from": "华北制药",
+        "to": "成都医药公司",
+        "shipQty": 600,
+        "recvQty": 600,
+        "shipDate": "2024-04-01",
+        "recvDate": "2024-04-05",
+        "shipFlowId": "FLWMQ80L8N65",
+        "recvId": "RCVMQ80L8N66"
+      }
+    ],
+    "unmatched": [
+      {
+        "batchNo": "BN2024003",
+        "from": "华北制药",
+        "to": "广州医药公司",
+        "shipQty": 800,
+        "shipDate": "2024-03-10",
+        "status": "reported",
+        "shipFlowId": "FLWMQ80L8N62"
+      }
+    ],
+    "qtyMismatch": [
+      {
+        "batchNo": "BN2024001",
+        "shipQty": 1000,
+        "recvQty": 998,
+        "diff": -2
+      }
+    ],
+    "shipTotal": 4,
+    "recvTotal": 3
+  },
+  "missing": [
+    {
+      "level": "warn",
+      "group": "码包",
+      "msg": "码包 阿莫西林码包 未绑定"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024001 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024002 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024003 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024004 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "批次",
+      "msg": "批号 BN2024005 未关联码包"
+    },
+    {
+      "level": "warn",
+      "group": "流向",
+      "msg": "批号 BN2024003 发货至 广州医药公司 未确认收货"
+    }
+  ],
+  "logs": []
+}

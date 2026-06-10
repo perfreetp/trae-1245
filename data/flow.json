@@ -1,0 +1,92 @@
+[
+  {
+    "id": "FLWMQ80L8N40",
+    "type": "ship",
+    "batchNo": "BN2024001",
+    "from": "华北制药",
+    "to": "北京医药公司",
+    "quantity": 1000,
+    "date": "2024-03-01",
+    "status": "received",
+    "remark": "3月上旬首批发货",
+    "createdAt": "2026-06-10T11:57:51.232Z",
+    "receivedAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "FLWMQ80L8N61",
+    "type": "ship",
+    "batchNo": "BN2024002",
+    "from": "华北制药",
+    "to": "上海医药公司",
+    "quantity": 500,
+    "date": "2024-03-05",
+    "status": "received",
+    "remark": "",
+    "createdAt": "2026-06-10T11:57:51.234Z",
+    "receivedAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "FLWMQ80L8N62",
+    "type": "ship",
+    "batchNo": "BN2024003",
+    "from": "华北制药",
+    "to": "广州医药公司",
+    "quantity": 800,
+    "date": "2024-03-10",
+    "status": "reported",
+    "remark": "",
+    "createdAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "RCVMQ80L8N63",
+    "type": "receive",
+    "shipFlowId": "FLWMQ80L8N40",
+    "batchNo": "BN2024001",
+    "from": "华北制药",
+    "to": "北京医药公司",
+    "quantity": 998,
+    "receivedBy": "李经理",
+    "date": "2024-03-04",
+    "remark": "实收998",
+    "createdAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "RCVMQ80L8N64",
+    "type": "receive",
+    "shipFlowId": "FLWMQ80L8N61",
+    "batchNo": "BN2024002",
+    "from": "华北制药",
+    "to": "上海医药公司",
+    "quantity": 500,
+    "receivedBy": "王经理",
+    "date": "2024-03-07",
+    "remark": "",
+    "createdAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "FLWMQ80L8N65",
+    "type": "ship",
+    "batchNo": "BN2024004",
+    "from": "华北制药",
+    "to": "成都医药公司",
+    "quantity": 600,
+    "date": "2024-04-01",
+    "status": "received",
+    "remark": "",
+    "createdAt": "2026-06-10T11:57:51.234Z",
+    "receivedAt": "2026-06-10T11:57:51.234Z"
+  },
+  {
+    "id": "RCVMQ80L8N66",
+    "type": "receive",
+    "shipFlowId": "FLWMQ80L8N65",
+    "batchNo": "BN2024004",
+    "from": "华北制药",
+    "to": "成都医药公司",
+    "quantity": 600,
+    "receivedBy": "张经理",
+    "date": "2024-04-05",
+    "remark": "",
+    "createdAt": "2026-06-10T11:57:51.234Z"
+  }
+]
