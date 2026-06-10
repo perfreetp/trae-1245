@@ -1,0 +1,21 @@
+{
+  "name": "durg-trace",
+  "version": "1.0.0",
+  "description": "药品追溯命令行工具",
+  "main": "src/index.js",
+  "bin": {
+    "durg-trace": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/test.js"
+  },
+  "keywords": ["drug", "traceability", "cli"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "clsx": "^2.1.1",
+    "commander": "^15.0.0"
+  }
+}
