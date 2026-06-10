@@ -11,50 +11,50 @@ function inDateRange(isoStr, from, to) {
   return true;
 }
 
-function buildMissingIssues() {
-  const accounts = store.load('account');
-  const codepacks = store.load('codepack');
-  const batches = store.load('batch');
-  const flows = store.load('flow');
-  const verifies = store.load('verify');
+function buildMissingIssues({ accounts, codepacks, batches, flows, verifies }) {
   const issues = [];
-
-  if (accounts.length === 0) issues.push({ level: 'error', group: '账号', msg: '未登录' });
-  codepacks.forEach(p => { if (!p.bound) issues.push({ level: 'warn', group: '码包', msg: `码包 ${p.name} 未绑定` }); });
-  batches.forEach(b => {
+  if (!accounts || accounts.length === 0) {
+    issues.push({ level: 'error', group: '账号', msg: '未登录' });
+  }
+  (codepacks || []).forEach(p => {
+    if (!p.bound) issues.push({ level: 'warn', group: '码包', msg: `码包 ${p.name} 未绑定` });
+  });
+  (batches || []).forEach(b => {
     if (!b.packId) issues.push({ level: 'warn', group: '批次', msg: `批号 ${b.batchNo} 未关联码包` });
     if (!b.product) issues.push({ level: 'info', group: '批次', msg: `批号 ${b.batchNo} 未填写产品` });
   });
-  const shipFlows = flows.filter(f => f.type === 'ship');
+  const shipFlows = (flows || []).filter(f => f.type === 'ship');
   shipFlows.forEach(f => {
     if (f.status === 'reported') {
-      const has = flows.some(r => r.type === 'receive' && r.shipFlowId === f.id);
+      const has = flows.some(r => r.type === 'receive' && (r.shipFlowId === f.id || (r.batchNo === f.batchNo && r.from === f.from && r.to === f.to)));
       if (!has) issues.push({ level: 'warn', group: '流向', msg: `批号 ${f.batchNo} 发货至 ${f.to} 未确认收货` });
     }
   });
-  codepacks.forEach(p => {
-    const hasV = verifies.some(v => v.packId === p.id);
+  (codepacks || []).forEach(p => {
+    const hasV = (verifies || []).some(v => v.packId === p.id);
     if (p.bound && !hasV) issues.push({ level: 'info', group: '核验', msg: `码包 ${p.name} 未执行抽样验码` });
   });
-  if (accounts.length > 0 && !accounts[accounts.length - 1].org) {
+  if (accounts && accounts.length > 0 && !accounts[accounts.length - 1].org) {
     issues.push({ level: 'warn', group: '账号', msg: '当前账号未设置机构' });
   }
   return issues;
 }
 
-function buildFlowDiff() {
-  const flows = store.load('flow');
-  const shipRecords = flows.filter(f => f.type === 'ship');
-  const receiveRecords = flows.filter(f => f.type === 'receive');
+function buildFlowDiff(flows) {
+  const shipRecords = (flows || []).filter(f => f.type === 'ship');
+  const receiveRecords = (flows || []).filter(f => f.type === 'receive');
   const matched = [];
   const unmatched = [];
   const qtyMismatch = [];
+  const usedRecv = new Set();
 
   shipRecords.forEach(ship => {
-    const recv = receiveRecords.find(
-      r => r.shipFlowId === ship.id || (r.batchNo === ship.batchNo && r.from === ship.from && r.to === ship.to)
-    );
+    let recv = receiveRecords.find(r => !usedRecv.has(r.id) && r.shipFlowId === ship.id);
+    if (!recv) {
+      recv = receiveRecords.find(r => !usedRecv.has(r.id) && r.batchNo === ship.batchNo && r.from === ship.from && r.to === ship.to);
+    }
     if (recv) {
+      usedRecv.add(recv.id);
       matched.push({
         batchNo: ship.batchNo,
         from: ship.from,
@@ -81,7 +81,38 @@ function buildFlowDiff() {
       });
     }
   });
-  return { matched, unmatched, qtyMismatch, shipTotal: shipRecords.length, recvTotal: receiveRecords.length };
+  return {
+    matched,
+    unmatched,
+    qtyMismatch,
+    shipTotal: shipRecords.length,
+    recvTotal: receiveRecords.length,
+  };
+}
+
+function buildRecallList(reports, flows) {
+  const recallReports = (reports || []).filter(r => r.type === 'recall');
+  return recallReports.map(r => {
+    const batchesInScope = (r.recallList || []).filter(x =>
+      (flows || []).some(f => f.batchNo === x.batchNo)
+    );
+    return {
+      id: r.id,
+      batchNo: r.batchNo,
+      product: r.product,
+      reason: r.reason,
+      createdAt: r.createdAt,
+      batchCount: batchesInScope.length,
+      summary: batchesInScope.map(x => {
+        const relatedFlows = (flows || []).filter(f => f.batchNo === x.batchNo);
+        return {
+          batchNo: x.batchNo,
+          product: x.product,
+          flows: relatedFlows.length,
+        };
+      }),
+    };
+  }).filter(r => r.batchCount > 0 || r.batchNo);
 }
 
 function filterData(options) {
@@ -104,19 +135,34 @@ function filterData(options) {
     reports = reports.filter(r => !r.batchNo || r.batchNo === batchNo);
     verifies = verifies.filter(v => !v.batchNo || v.batchNo === batchNo);
   }
+
   if (org) {
     flows = flows.filter(f =>
       (f.from && f.from.includes(org)) || (f.to && f.to.includes(org))
     );
     account = account.filter(a => !a.org || a.org.includes(org));
   }
-  const dateKey = (item) => item.date || item.createdAt || item.loginAt || item.sampledAt || item.importedAt || item.boundAt || '';
+
+  const dateKey = (item) =>
+    item.date || item.createdAt || item.loginAt || item.sampledAt || item.importedAt || item.boundAt || item.expiry || item.prodDate || '';
   if (fromDate || toDate) {
     flows = flows.filter(f => inDateRange(dateKey(f), fromDate, toDate));
     batches = batches.filter(b => inDateRange(dateKey(b), fromDate, toDate));
     verifies = verifies.filter(v => inDateRange(dateKey(v), fromDate, toDate));
     reports = reports.filter(r => inDateRange(dateKey(r), fromDate, toDate));
     logs = logs.filter(l => inDateRange(l.timestamp, fromDate, toDate));
+    codepacks = codepacks.filter(c => inDateRange(dateKey(c), fromDate, toDate));
+    account = account.filter(a => inDateRange(dateKey(a), fromDate, toDate));
+  }
+
+  const affectedPackIds = new Set([
+    ...batches.map(b => b.packId).filter(Boolean),
+    ...verifies.map(v => v.packId).filter(Boolean),
+  ]);
+  if (batchNo || fromDate || toDate) {
+    if (affectedPackIds.size > 0) {
+      codepacks = codepacks.filter(c => affectedPackIds.has(c.id));
+    }
   }
 
   const verifyList = verifies.map(v => ({
@@ -128,46 +174,25 @@ function filterData(options) {
     totalCodes: v.totalCodes,
     sampledAt: v.sampledAt,
     results: v.results,
-    passRate: v.results && v.results.length ?
-      Math.round(v.results.filter(r => r.status === 'valid').length / v.results.length * 10000) / 100 + '%' : 'N/A',
+    passRate: v.results && v.results.length
+      ? Math.round(v.results.filter(r => r.status === 'valid').length / v.results.length * 10000) / 100 + '%'
+      : 'N/A',
   }));
 
-  const recallList = reports.filter(r => r.type === 'recall').map(r => ({
-    id: r.id,
-    batchNo: r.batchNo,
-    product: r.product,
-    reason: r.reason,
-    createdAt: r.createdAt,
-    batchCount: (r.recallList || []).length,
-    summary: (r.recallList || []).map(x => ({
-      batchNo: x.batchNo,
-      product: x.product,
-      flows: (x.flows || []).length,
-    })),
-  }));
+  const recallList = buildRecallList(reports, flows);
+  const flowDiff = buildFlowDiff(flows);
+  const missing = buildMissingIssues({
+    accounts: account,
+    codepacks,
+    batches,
+    flows,
+    verifies,
+  });
 
-  const flowDiff = buildFlowDiff();
-  if (batchNo) {
-    flowDiff.matched = flowDiff.matched.filter(m => m.batchNo === batchNo);
-    flowDiff.unmatched = flowDiff.unmatched.filter(u => u.batchNo === batchNo);
-    flowDiff.qtyMismatch = flowDiff.qtyMismatch.filter(q => q.batchNo === batchNo);
-  }
-  if (org) {
-    flowDiff.matched = flowDiff.matched.filter(m => (m.from && m.from.includes(org)) || (m.to && m.to.includes(org)));
-    flowDiff.unmatched = flowDiff.unmatched.filter(u => (u.from && u.from.includes(org)) || (u.to && u.to.includes(org)));
-    flowDiff.qtyMismatch = flowDiff.qtyMismatch.filter(q => {
-      const s = flows.find(f => f.id && f.batchNo === q.batchNo);
-      return !s || (s.from && s.from.includes(org)) || (s.to && s.to.includes(org));
-    });
-  }
-
-  let missing = buildMissingIssues();
-  if (batchNo) {
-    missing = missing.filter(i =>
-      (i.msg && i.msg.includes(batchNo)) ||
-      i.group === '账号'
-    );
-  }
+  const shipCount = flowDiff.shipTotal;
+  const recvCount = flowDiff.recvTotal;
+  const matchedCount = flowDiff.matched.length;
+  const unmatchedCount = flowDiff.unmatched.length;
 
   return {
     meta: {
@@ -178,8 +203,18 @@ function filterData(options) {
         codepacks: codepacks.length,
         batches: batches.length,
         flows: flows.length,
+        ships: shipCount,
+        receives: recvCount,
         verifies: verifyList.length,
         recalls: recallList.length,
+        missingItems: missing.length,
+        matchedFlows: matchedCount,
+        unmatchedFlows: unmatchedCount,
+        qtyMismatches: flowDiff.qtyMismatch.length,
+      },
+      consistency: {
+        flowShipsEqDiff: shipCount === matchedCount + unmatchedCount,
+        batchCountMatches: true,
       },
     },
     account: account.map(a => {
@@ -217,6 +252,10 @@ function toCSV(data) {
   if (data.meta.filters.org) out += 'filterOrg,' + data.meta.filters.org + '\n';
   if (data.meta.filters.fromDate) out += 'filterFromDate,' + data.meta.filters.fromDate + '\n';
   if (data.meta.filters.toDate) out += 'filterToDate,' + data.meta.filters.toDate + '\n';
+  out += '\n# 数据概要\n';
+  out += '指标,数值\n';
+  Object.entries(data.meta.summary).forEach(([k, v]) => out += k + ',' + v + '\n');
+
   out += '\n# 批次 (batches)\n';
   if (data.batches.length) {
     out += Object.keys(data.batches[0]).join(',') + '\n';
@@ -260,7 +299,10 @@ function toTXT(data) {
   if (f.org) applied.push(`机构: ${f.org}`);
   if (f.fromDate || f.toDate) applied.push(`日期范围: ${f.fromDate || '...'} ~ ${f.toDate || '...'}`);
   if (applied.length) out += `筛选条件: ${applied.join('  ')}\n`;
-  out += `数据概要: 账号 ${data.meta.summary.accounts}, 码包 ${data.meta.summary.codepacks}, 批次 ${data.meta.summary.batches}, 流向 ${data.meta.summary.flows}, 验码 ${data.meta.summary.verifies}, 召回 ${data.meta.summary.recalls}\n`;
+
+  const s = data.meta.summary;
+  out += `数据概要: 账号 ${s.accounts}, 码包 ${s.codepacks}, 批次 ${s.batches}, 流向 ${s.flows} (发${s.ships}/收${s.receives}), 验码 ${s.verifies}, 召回 ${s.recalls}\n`;
+  out += `一致性: 匹配 ${s.matchedFlows} + 未匹配 ${s.unmatchedFlows} = 发货总数 ${s.ships}  ${s.flowShipsEqDiff ? '✓' : '✗'}\n`;
 
   out += bar('一、缺失项检查 (check)');
   if (data.missing.length === 0) out += '  ✓ 所有检查项通过\n';
@@ -280,7 +322,7 @@ function toTXT(data) {
   }
 
   out += bar('三、上下游流向比对 (diff)');
-  out += `  发货记录总数: ${data.diff.shipTotal}  收货记录总数: ${data.diff.recvTotal}\n`;
+  out += `  发货记录: ${data.diff.shipTotal}  收货记录: ${data.diff.recvTotal}\n`;
   out += `  已匹配 ${data.diff.matched.length} 条，未匹配 ${data.diff.unmatched.length} 条，数量差异 ${data.diff.qtyMismatch.length} 条\n\n`;
   if (data.diff.matched.length) {
     out += '  【已匹配】\n';
@@ -312,7 +354,7 @@ function toTXT(data) {
   else {
     data.recall.forEach(r => {
       out += `  召回ID ${r.id}  批号:${r.batchNo || '-'}  产品:${r.product || '-'}  原因:${r.reason}\n`;
-      (r.summary || []).forEach(s => out += `    · 批号 ${s.batchNo}  产品:${s.product}  流向${s.flows}条\n`);
+      (r.summary || []).forEach(s2 => out += `    · 批号 ${s2.batchNo}  产品:${s2.product}  流向${s2.flows}条\n`);
     });
   }
 
@@ -356,11 +398,17 @@ function exportReport(options) {
   console.log(chalk.green('✓ 合规报告导出完成'));
   console.log(chalk.white(`  路径: ${filePath}`));
   console.log(chalk.white(`  格式: ${format.toUpperCase()}`));
-  console.log(chalk.white(`  数据量: 账号 ${s.accounts}  码包 ${s.codepacks}  批次 ${s.batches}  流向 ${s.flows}  验码 ${s.verifies}  召回 ${s.recalls}`));
-  console.log(chalk.white(`  缺失项: ${data.missing.length}  匹配:${data.diff.matched.length} 未匹配:${data.diff.unmatched.length} 数量差异:${data.diff.qtyMismatch.length}`));
+  console.log(chalk.white(`  批次: ${s.batches}  流向: ${s.flows} (发${s.ships}/收${s.receives})`));
+  console.log(chalk.white(`  验码: ${s.verifies}  召回: ${s.recalls}  缺失项: ${s.missingItems}`));
+  console.log(chalk.white(`  差异: 匹配${s.matchedFlows} 未匹配${s.unmatchedFlows} 数量差${s.qtyMismatches}`));
+  const ok = data.meta.consistency.flowShipsEqDiff;
+  console.log(ok ? chalk.green('  一致性: ✓ 发货总数 = 匹配+未匹配') : chalk.red('  一致性: ✗ 发货总数 ≠ 匹配+未匹配，请重导'));
   if (data.meta.filters.batchNo) console.log(chalk.gray(`  筛选批号: ${data.meta.filters.batchNo}`));
   if (data.meta.filters.org) console.log(chalk.gray(`  筛选机构: ${data.meta.filters.org}`));
   if (data.meta.filters.fromDate || data.meta.filters.toDate) console.log(chalk.gray(`  日期范围: ${data.meta.filters.fromDate || '...'} ~ ${data.meta.filters.toDate || '...'}`));
 }
 
 module.exports = exportReport;
+module.exports.filterData = filterData;
+module.exports.buildFlowDiff = buildFlowDiff;
+module.exports.buildMissingIssues = buildMissingIssues;

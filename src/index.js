@@ -18,6 +18,7 @@ const exportReport = require('./commands/export');
 const mask = require('./commands/mask');
 const logCmd = require('./commands/log');
 const check = require('./commands/check');
+const auditReport = require('./commands/audit');
 
 const program = new Command();
 
@@ -44,6 +45,8 @@ program
   .description('批量导入文件（码包/流向/批次），根据 --kind 自动识别：codepack/flow/batch（码包组）')
   .option('-n, --name <name>', '码包名称，默认取文件名（仅 codepack 生效）')
   .option('-k, --kind <kind>', '文件类型: codepack(码包) / flow(流向) / batch(批次)，默认自动识别', 'auto')
+  .option('-d, --dry-run', '仅预览不写入，检查新增/跳过/错误数量')
+  .option('--validate', '同 --dry-run，仅校验格式')
   .action(importCodes);
 
 program
@@ -107,8 +110,13 @@ program
 
 program
   .command('retry [action]')
-  .description('重试失败任务（核验组）- action: list/run/clear')
+  .description('重试失败任务（核验组）- action: list/preview/run/export/clear')
   .option('--id <taskId>', '指定任务ID')
+  .option('-t, --type <type>', '按任务类型筛选（import/ship/receive/verify 等）')
+  .option('-s, --status <status>', '按状态筛选：pending/failed/done')
+  .option('--from <date>', '创建时间起始 YYYY-MM-DD')
+  .option('--to <date>', '创建时间结束 YYYY-MM-DD')
+  .option('--export <file>', '重跑/列表后导出失败任务处理记录 JSON')
   .action(retryCmd);
 
 program
@@ -121,6 +129,21 @@ program
   .option('--from <date>', '按日期范围起始 YYYY-MM-DD')
   .option('--to <date>', '按日期范围结束 YYYY-MM-DD')
   .action(exportReport);
+
+program
+  .command('report <action>')
+  .description('报告管理（报告组）- action: audit/export')
+  .option('-f, --file <file>', '待审计的报告文件路径')
+  .action((action, options) => {
+    if (action === 'audit') {
+      auditReport(options.file);
+    } else if (action === 'export') {
+      exportReport(options);
+    } else {
+      console.log(chalk.red(`未知 report 操作: ${action}`));
+      console.log(chalk.gray('可用操作: audit, export'));
+    }
+  });
 
 program
   .command('mask')
@@ -166,6 +189,7 @@ program
     console.log(chalk.white('    durg-trace import codes.json --kind codepack'));
     console.log(chalk.white('    durg-trace import flow.csv --kind flow'));
     console.log(chalk.white('    durg-trace import batch.csv --kind batch'));
+    console.log(chalk.white('    durg-trace import batch.csv --dry-run        # 预览不写入'));
     console.log(chalk.white('    durg-trace bind'));
     console.log(chalk.white('    durg-trace bind CPXXXX --product P001 --spec 0.25g --level box'));
     console.log('');
@@ -193,17 +217,22 @@ program
     console.log(chalk.white('    durg-trace recall --batch-no BN2024001 --reason 含量不达标'));
     console.log(chalk.white('    durg-trace recall --product 阿莫西林 --reason 包装瑕疵'));
     console.log(chalk.white('    durg-trace retry list'));
+    console.log(chalk.white('    durg-trace retry list -t import -s pending'));
+    console.log(chalk.white('    durg-trace retry preview                      # 重跑前预览影响'));
     console.log(chalk.white('    durg-trace retry run'));
     console.log(chalk.white('    durg-trace retry run --id RTYXXXX'));
+    console.log(chalk.white('    durg-trace retry run --export retry-log.json  # 跑完导出留档'));
     console.log(chalk.white('    durg-trace retry clear'));
     console.log('');
     console.log(chalk.yellow('  ┌───────────────────────────────────────────────┐'));
-    console.log(chalk.yellow('  │ 【报告组】export / mask / log                   │'));
+    console.log(chalk.yellow('  │ 【报告组】export / report / mask / log          │'));
     console.log(chalk.yellow('  └───────────────────────────────────────────────┘'));
     console.log(chalk.white('    durg-trace export -f json -o report.json'));
     console.log(chalk.white('    durg-trace export -f csv --batch-no BN2024001'));
     console.log(chalk.white('    durg-trace export -f txt --from 2024-01-01 --to 2024-12-31'));
     console.log(chalk.white('    durg-trace export -f json --org 华北制药'));
+    console.log(chalk.white('    durg-trace report audit -f report.json        # 审计已导出报告'));
+    console.log(chalk.white('    durg-trace report audit -f report.txt'));
     console.log(chalk.white('    durg-trace mask -t account'));
     console.log(chalk.white('    durg-trace mask -t all'));
     console.log(chalk.white('    durg-trace log -a ship -l 10'));
